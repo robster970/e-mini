@@ -63,7 +63,7 @@ reqCurrentTime(tws)
 serverVersion(tws)
 
 # Get the market data for ES
- Define the contract - THIS NEEDS TO CHANGE EVERY QUARTER
+# Define the contract - THIS NEEDS TO CHANGE EVERY QUARTER
 es <- twsFuture("ES", "GLOBEX", "201512")
 
 #Get the market data
@@ -248,6 +248,10 @@ end.of.turn <- (a.term*point.of.turn^2)+(b.term*point.of.turn)+c.term
 #time.of.turn <- mid.hourly[start.point+point.of.turn,];time.of.turn
 
 win.graph()
+par(mfrow=c(2,2))
+plot(lm.r)
+
+win.graph()
 par(mfrow=c(1,2))
 
 #Plot the 30min area of inspection
@@ -281,7 +285,6 @@ title.5=paste("Point plot on 30min","\n","| Gradient:",round(current.gradient,3)
 plot(price, main=title.5)
 grid(NULL,NULL,lwd=1)
 lines(time, fit, lwd=2, col="red")
-
 
 #high.price <- coredata(high.hourly[start.point:rows.returned.hourly])
 #low.price <- coredata(low.hourly[start.point:rows.returned.hourly])
