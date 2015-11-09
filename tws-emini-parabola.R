@@ -181,8 +181,8 @@ plot.colour <-"Cyan"
 start.date <- paste(contract.rollover.date,"/")
 
 #Filter out dataset for contract rollover
-eshourly.volume.days <- esdata.hourly[,5]
-eshourly.volume.days <- eshourly.volume[start.date]
+eshourly.volume.alldays <- esdata.hourly[,5]
+eshourly.volume.days <- eshourly.volume.alldays[start.date]
 
 #Adjust index to NYSE and move volume data into its own object with time filter
 indexTZ(eshourly.volume.days) <-"America/New_york"
