@@ -165,13 +165,15 @@ par(mfrow=c(1,2))
 
 if (iterations == 1){
 
-filter.time <-"T09:30/T09:59"
+filter.time.1 <-"T09:30/T09:59"
+filter.time.2 <-"T09:30/T10:29"
 plot.title <- "Opening Volume"
 plot.colour <-"Orange"
 
 } else {
 
-filter.time <-"T15:30/T15:59"
+filter.time.1 <-"T15:30/T15:59"
+filter.time.2 <-"T15:00/T15:59"
 plot.title <-"Closing Volume"
 plot.colour <-"Cyan"
 
@@ -186,13 +188,15 @@ eshourly.volume.days <- eshourly.volume.alldays[start.date]
 
 #Adjust index to NYSE and move volume data into its own object with time filter
 indexTZ(eshourly.volume.days) <-"America/New_york"
-eshourly.volume.open <- eshourly.volume.days[filter.time]
+eshourly.volume.open.1 <- apply.daily((eshourly.volume.days[filter.time.1]),sum)
+eshourly.volume.open.2 <- apply.daily((eshourly.volume.days[filter.time.2]),sum)
  
 perc.rank <- function(x, xo)  length(x[x <= xo])/length(x)*100;
-eshourly.volume.open.percentile <- perc.rank(eshourly.volume.open, as.numeric(coredata(tail(eshourly.volume.open,1))))
+eshourly.volume.open.percentile <- perc.rank(eshourly.volume.open.2, as.numeric(coredata(tail(eshourly.volume.open.2,1))))
 
-title.3=paste("Plot of", plot.title,"\n", index(tail(eshourly.volume.open,1)),"\n Vol: ",coredata(tail(eshourly.volume.open,1)),", Percentile: ",round(eshourly.volume.open.percentile,0),"%")
-plot(eshourly.volume.open, main=title.3)
+title.3=paste("Plot of", plot.title,"\n", index(tail(eshourly.volume.open.2,1)),"\n Vol: ",coredata(tail(eshourly.volume.open.2,1)),", Percentile: ",round(eshourly.volume.open.percentile,0),"%")
+plot(eshourly.volume.open.2, main=title.3, ylim=c(min(eshourly.volume.open.1),max(eshourly.volume.open.2)))
+lines(eshourly.volume.open.1, col="red")
 
 title.4=paste("Histogram of",plot.title,"\n","Mean:",round(mean(eshourly.volume.open),0),"\n","SD:",round(sd(eshourly.volume.open),0),"\n")
 hist(eshourly.volume.open, 15, prob=T, col=plot.colour, main=title.4)
