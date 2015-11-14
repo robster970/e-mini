@@ -194,9 +194,11 @@ eshourly.volume.open.2 <- apply.daily((eshourly.volume.days[filter.time.2]),sum)
 perc.rank <- function(x, xo)  length(x[x <= xo])/length(x)*100;
 eshourly.volume.open.percentile <- perc.rank(eshourly.volume.open.2, as.numeric(coredata(tail(eshourly.volume.open.2,1))))
 
+colours <- c("black", "red")
 title.3=paste("Plot of", plot.title,"\n", index(tail(eshourly.volume.open.2,1)),"\n Vol: ",coredata(tail(eshourly.volume.open.2,1)),", Percentile: ",round(eshourly.volume.open.percentile,0),"%")
 plot(eshourly.volume.open.2, main=title.3, ylim=c(min(eshourly.volume.open.1),max(eshourly.volume.open.2)))
 lines(eshourly.volume.open.1, col="red")
+#legend("topleft", inset=.05,c(paste(filter.time.2,"\n"), paste(filter.time.1,"\n")), fill=colours, horiz=TRUE)
 
 title.4=paste("Histogram of",plot.title,"\n","Mean:",round(mean(eshourly.volume.open),0),"\n","SD:",round(sd(eshourly.volume.open),0),"\n")
 hist(eshourly.volume.open, 15, prob=T, col=plot.colour, main=title.4)
@@ -222,7 +224,7 @@ iterations <- iterations+1
 ########################################################################
 
 #target.start.date <- "2015-11-02 02:00:00"
-target.start.date <- "2015-09-29 18:00:00"
+target.start.date <- "2015-11-12 03:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
@@ -278,7 +280,7 @@ win.graph()
 par(mfrow=c(1,2))
 
 # 5 is a good fit for small moves of 2-4 days, 20 for larger multi-day moves
-ma.factor <- 20
+ma.factor <- 5
 title.7=paste("(price-fit), ",ma.factor,"MA& SD (price-fit)","\n","|Max (",ma.factor,"MA) Deviation:",round(max(rollmean(price-fit,ma.factor)),2),"|\n","|Max (",ma.factor,"MA)+fit:",round(tail(fit,1)+max(rollmean(price-fit,ma.factor)),2),"| 2SD(price-fit): ",(2*round(sd(price-fit),2)),"|\n")
 plot(price-fit, col="orange", main=title.7)
 grid(NULL,NULL,lwd=1)
