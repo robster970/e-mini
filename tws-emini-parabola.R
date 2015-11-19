@@ -16,7 +16,7 @@ library(lubridate)
 
 #set some variables
 Sys.setenv(TZ="Europe/London")
-get.data <- 1 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
+get.data <- 0 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
 ma.size.hourly <- 30
 ma.size.daily <- 10
 pause <- 2; # Sets a pause between collecting data from IB to stop IB from having a little paddy
@@ -158,7 +158,7 @@ mean(x, na.rm=TRUE)
 iterations <- 1
 contract.rollover.date <-"2015-09-18"
 
-while (iterations < 3) {
+while (iterations < 4) {
 
 win.graph()
 par(mfrow=c(1,2))
@@ -170,12 +170,23 @@ filter.time.2 <-"T09:30/T10:29"
 plot.title <- "Opening Volume"
 plot.colour <-"Orange"
 
-} else {
+}
 
-filter.time.1 <-"T15:30/T15:59"
-filter.time.2 <-"T15:00/T15:59"
+else if (iterations == 2) {
+
+filter.time.1 <-"T15:30/T16:29"
+filter.time.2 <-"T15:00/T16:29"
 plot.title <-"Closing Volume"
 plot.colour <-"Cyan"
+
+}
+
+else {
+
+filter.time.1 <-"T16:30/T23:59"
+filter.time.2 <-"T00:00/T09:29"
+plot.title <-"Overnight Volume"
+plot.colour <-"Grey"
 
 }
 
@@ -200,14 +211,14 @@ plot(eshourly.volume.open.2, main=title.3, ylim=c(min(eshourly.volume.open.1),ma
 lines(eshourly.volume.open.1, col="red")
 #legend("topleft", inset=.05,c(paste(filter.time.2,"\n"), paste(filter.time.1,"\n")), fill=colours, horiz=TRUE)
 
-title.4=paste("Histogram of",plot.title,"\n","Mean:",round(mean(eshourly.volume.open),0),"\n","SD:",round(sd(eshourly.volume.open),0),"\n")
-hist(eshourly.volume.open, 15, prob=T, col=plot.colour, main=title.4)
-lines(density(eshourly.volume.open, na.rm=TRUE), col="red", lwd=2)
-abline(v=mean(eshourly.volume.open), col="blue", lwd="2")
-abline(v=(mean(eshourly.volume.open)+sd(eshourly.volume.open)), col="purple", lwd="1", lty=2)
-abline(v=(mean(eshourly.volume.open)-sd(eshourly.volume.open)), col="purple", lwd="1", lty=2)
-abline(v=(mean(eshourly.volume.open)+2*sd(eshourly.volume.open)), col="purple", lwd="1", lty=2)
-abline(v=(mean(eshourly.volume.open)-2*sd(eshourly.volume.open)), col="purple", lwd="1", lty=2)
+title.4=paste("Histogram of",plot.title,"\n","Mean:",round(mean(eshourly.volume.open.2),0),"\n","SD:",round(sd(eshourly.volume.open.2),0),"\n")
+hist(eshourly.volume.open.2, 10, prob=T, col=plot.colour, main=title.4)
+lines(density(eshourly.volume.open.2, na.rm=TRUE), col="red", lwd=2)
+abline(v=mean(eshourly.volume.open.2), col="blue", lwd="2")
+abline(v=(mean(eshourly.volume.open.2)+sd(eshourly.volume.open.2)), col="purple", lwd="1", lty=2)
+abline(v=(mean(eshourly.volume.open.2)-sd(eshourly.volume.open.2)), col="purple", lwd="1", lty=2)
+abline(v=(mean(eshourly.volume.open.2)+2*sd(eshourly.volume.open.2)), col="purple", lwd="1", lty=2)
+abline(v=(mean(eshourly.volume.open.2)-2*sd(eshourly.volume.open.2)), col="purple", lwd="1", lty=2)
 
 iterations <- iterations+1
 
@@ -223,8 +234,8 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-#target.start.date <- "2015-11-02 02:00:00"
-target.start.date <- "2015-11-12 03:30:00"
+target.start.date <- "2015-11-15 23:00:00"
+#target.start.date <- "2015-11-16 14:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
