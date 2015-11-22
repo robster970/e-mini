@@ -272,7 +272,7 @@ win.graph()
 par(mfrow=c(1,2))
 
 #Plot the 30min area of inspection
-title.5=paste("Point plot on 30min","\n","| Gradient:",round(current.gradient,3)," | EoT:",round(end.of.turn,2)," |\n", "| Last price, fit,(price-fit):",round(tail(price,1),2),",",round(tail(fit,1),2),",",round(tail((price-fit),1),2)," |\n")
+title.5=paste("Point plot on 30min","\n","| Gradient:",round(current.gradient,3)," | EoT:",round(end.of.turn,2)," | When:",round(point.of.turn-max(time),2),"|\n", "| Last price, fit,(price-fit):",round(tail(price,1),2),",",round(tail(fit,1),2),",",round(tail((price-fit),1),2)," |\n")
 plot(price, main=title.5)
 lines(time, fit, lwd=2, col="red")
 
@@ -298,7 +298,7 @@ grid(NULL,NULL,lwd=1)
 lines(rollmean(price-fit,ma.factor), col="purple", lwd=2)
 lines(rollapply((price-fit), ma.factor,sd)+min(price-fit), col="red", lwd=2)
 
-title.5=paste("Point plot on 30min","\n","| Gradient:",round(current.gradient,3)," | EoT:",round(end.of.turn,2)," |\n", "| Last price, fit,(price-fit):",round(tail(price,1),2),",",round(tail(fit,1),2),",",round(tail((price-fit),1),2)," |\n")
+title.5=paste("Point plot on 30min","\n","| Gradient:",round(current.gradient,3)," | EoT:",round(end.of.turn,2)," | When:",round(point.of.turn-max(time),2),"|\n", "| Last price, fit,(price-fit):",round(tail(price,1),2),",",round(tail(fit,1),2),",",round(tail((price-fit),1),2)," |\n")
 plot(price, main=title.5)
 grid(NULL,NULL,lwd=1)
 lines(time, fit, lwd=2, col="red")
