@@ -1,0 +1,46 @@
+#Close all old graphics windows
+graphics.off()
+
+#Move data into new variables to test and filter for RTH
+sample.data <- open.hourly
+indexTZ(sample.data) <-"America/New_york"
+sample.data <- diff(sample.data)
+sample.data <- sample.data["T09:30/T16:30"]
+
+#Split the dataset into two even halves
+a <- nrow(sample.data)
+b <- head(sample.data,a/2)
+c <- tail(sample.data, a/2)
+
+#Start the Plotting
+win.graph()
+par(mfrow=c(1,4))
+
+#Plot histogram for B.Sample
+hist(b,30, prob=T, col="green")
+lines(density(b, na.rm=TRUE), col="red", lwd=2)
+
+#Plot histogram for C.Sample
+hist(c,30, prob=T, col="yellow")
+lines(density(c, na.rm=TRUE), col="blue", lwd=2)
+
+#Plot PDFs for B & C Sample
+plot(density(b, na.rm=TRUE), col="red", lwd=2)
+polygon(density(b, na.rm=TRUE), col="red", lwd=2)
+lines(density(c, na.rm=TRUE), col="blue", lwd=2)
+polygon(density(c, na.rm=TRUE), col="blue", lwd=2)
+
+#Manually calculate CDF's and plot
+b.sorted <- sort(coredata(b))
+b.n <- nrow(b)
+c.sorted <- sort(coredata(c))
+c.n <- nrow(c)
+
+plot(b.sorted, (1:b.n)/b.n, type = 's', ylim = c(0, 1), col="red", lwd=1, main="CDF for (b) and (c)")
+lines(c.sorted, (1:b.n)/b.n, type = 's', ylim = c(0, 1), col="blue", lwd=1)
+
+
+
+
+
+
