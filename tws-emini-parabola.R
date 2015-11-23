@@ -16,7 +16,7 @@ library(lubridate)
 
 #set some variables
 Sys.setenv(TZ="Europe/London")
-get.data <- 0 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
+get.data <- 1 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
 ma.size.hourly <- 30
 ma.size.daily <- 10
 pause <- 2; # Sets a pause between collecting data from IB to stop IB from having a little paddy
