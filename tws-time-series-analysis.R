@@ -28,10 +28,10 @@ win.graph()
 par(mfrow=c(1,3))
 
 #Plot PDFs for B & C Sample
-plot(density(b, na.rm=TRUE), col="red", lwd=2)
-polygon(density(b, na.rm=TRUE), col="red", lwd=2)
-lines(density(c, na.rm=TRUE), col="blue", lwd=2)
-polygon(density(c, na.rm=TRUE), col="blue", lwd=2)
+plot(density(b, na.rm=TRUE), col="red", lwd=1)
+polygon(density(b, na.rm=TRUE), col="red", lwd=1)
+lines(density(c, na.rm=TRUE), col="blue", lwd=1)
+polygon(density(c, na.rm=TRUE), col="blue", lwd=1)
 
 #Manually calculate CDF's and plot
 b.sorted <- sort(coredata(b))
