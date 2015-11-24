@@ -12,7 +12,6 @@ library(IBrokers)
 library(zoo)
 library(xts)
 library(tseries)
-library(lubridate)
 
 #set some variables
 Sys.setenv(TZ="Europe/London")
