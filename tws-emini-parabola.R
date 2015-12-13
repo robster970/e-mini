@@ -15,7 +15,7 @@ library(tseries)
 
 #set some variables
 Sys.setenv(TZ="Europe/London")
-get.data <- 1 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
+get.data <- 0 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
 ma.size.hourly <- 30
 ma.size.daily <- 10
 pause <- 2; # Sets a pause between collecting data from IB to stop IB from having a little paddy
@@ -233,7 +233,7 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-target.start.date <- "2015-12-07 12:30:00"
+target.start.date <- "2015-12-11 08:30:00"
 #target.start.date <- "2015-11-16 14:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
