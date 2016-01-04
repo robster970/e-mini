@@ -41,6 +41,7 @@ c.n <- nrow(c)
 
 if (b.n < c.n) {d.n <- b.n}
 if (c.n < b.n) {d.n <- c.n}
+if (b.n == c.n) {d.n <- b.n}
 
 plot(b.sorted, (1:b.n)/b.n, type = 's', ylim = c(0, 1), col="red", lwd=1, main="CDF for (b) and (c)")
 lines(c.sorted, (1:c.n)/c.n, type = 's', ylim = c(0, 1), col="blue", lwd=1)
