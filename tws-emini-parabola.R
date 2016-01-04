@@ -15,7 +15,7 @@ library(tseries)
 
 #set some variables
 Sys.setenv(TZ="Europe/London")
-get.data <- 0 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
+get.data <- 1 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
 ma.size.hourly <- 30
 ma.size.daily <- 10
 pause <- 2; # Sets a pause between collecting data from IB to stop IB from having a little paddy
@@ -41,7 +41,7 @@ serverVersion(tws)
 
 # Get the market data for ES
 # Define the contract - THIS NEEDS TO CHANGE EVERY QUARTER
-es <- twsFuture("ES", "GLOBEX", "201512")
+es <- twsFuture("ES", "GLOBEX", "201603")
 
 #Get the market data
 esdata.hourly <- reqHistoricalData(tws, es, endDateTime=sysdatetime, barSize="30 mins", duration="34 D", useRTH = "0")
@@ -63,7 +63,7 @@ serverVersion(tws)
 
 # Get the market data for ES
 # Define the contract - THIS NEEDS TO CHANGE EVERY QUARTER
-es <- twsFuture("ES", "GLOBEX", "201512")
+es <- twsFuture("ES", "GLOBEX", "201603")
 
 #Get the market data
 esdata.daily <- reqHistoricalData(tws, es, endDateTime=sysdatetime, barSize="1 day", duration="9 M", useRTH = "0")
@@ -78,18 +78,18 @@ rows.returned.hourly <- nrow(esdata.hourly)
 rows.returned.daily <- nrow(esdata.daily)
 
 #Carve up the dataset
-open.hourly <-xts(esdata.hourly$ESZ5.Open)
-close.hourly <-xts(esdata.hourly$ESZ5.Close)
-high.hourly <-xts(esdata.hourly$ESZ5.High)
-low.hourly <-xts(esdata.hourly$ESZ5.Low)
+open.hourly <-xts(esdata.hourly$ESH6.Open)
+close.hourly <-xts(esdata.hourly$ESH6.Close)
+high.hourly <-xts(esdata.hourly$ESH6.High)
+low.hourly <-xts(esdata.hourly$ESH6.Low)
 mid.hourly <- (high.hourly+low.hourly)/2
 ma.hourly <-rollmean(mid.hourly, ma.size.hourly, align="right")
 lagged.ma.hourly <-lag(ma.hourly,k=-(ma.size.hourly/2))
 
-open.daily <-xts(esdata.daily$ESZ5.Open)
-close.daily <-xts(esdata.daily$ESZ5.Close)
-high.daily <-xts(esdata.daily$ESZ5.High)
-low.daily <-xts(esdata.daily$ESZ5.Low)
+open.daily <-xts(esdata.daily$ESH6.Open)
+close.daily <-xts(esdata.daily$ESH6.Close)
+high.daily <-xts(esdata.daily$ESH6.High)
+low.daily <-xts(esdata.daily$ESH6.Low)
 mid.daily <- (high.daily+low.daily)/2
 ma.daily <-rollmean(mid.daily, ma.size.daily, align="right")
 lagged.ma.daily <-lag(ma.daily,k=-(ma.size.daily/2))
@@ -233,7 +233,7 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-target.start.date <- "2015-12-11 08:30:00"
+target.start.date <- "2015-12-30 02:00:00"
 #target.start.date <- "2015-11-16 14:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
@@ -293,6 +293,7 @@ par(mfrow=c(1,2))
 ma.factor <- 5
 title.7=paste("(price-fit), ",ma.factor,"MA& SD (price-fit)","\n","|Max (",ma.factor,"MA) Deviation:",round(max(rollmean(price-fit,ma.factor)),2),"|\n","|Max (",ma.factor,"MA)+fit:",round(tail(fit,1)+max(rollmean(price-fit,ma.factor)),2),"| 2SD(price-fit): ",(2*round(sd(price-fit),2)),"|\n")
 plot(price-fit, col="orange", main=title.7)
+lines(price-fit, col="orange")
 grid(NULL,NULL,lwd=1)
 lines(rollmean(price-fit,ma.factor), col="purple", lwd=2)
 lines(rollapply((price-fit), ma.factor,sd)+min(price-fit), col="red", lwd=2)
