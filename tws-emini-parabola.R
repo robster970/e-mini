@@ -1,4 +1,3 @@
-
 #########################Changes################################################
 #16/02/2015	Version 1.0 including (1) Plot of daily analysis and H/L assessment#
 #		(2) Plot of M30 with H/L assessment						 #
@@ -233,8 +232,8 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-target.start.date <- "2016-01-4 20:30:00"
-#target.start.date <- "2015-11-16 14:30:00"
+#target.start.date <- "2016-01-4 20:30:00"
+target.start.date <- "2015-12-31 17:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
@@ -303,6 +302,27 @@ plot(price, main=title.5)
 grid(NULL,NULL,lwd=1)
 lines(time, fit, lwd=2, col="red")
 
+#########################################################################
+# Residual analysis to look at how the fitted line and volatility       #
+# is changing as the move begins and ends      			            #
+#########################################################################
+
+source <- mid.hourly[start.point:rows.returned.hourly]
+residuals <- data.frame(index(source), residuals(lm.r))
+residuals.xts <- xts(residuals[,-1], order.by=residuals[,-2])
+residuals.min <- apply.daily(residuals.xts, min)
+residuals.max <- apply.daily(residuals.xts, max)
+residuals.mean <- apply.daily(residuals.xts, mean)
+residuals.sd <- apply.daily(residuals.xts, sd)
+residual.compare <- data.frame(residuals.min, coredata(residuals.max))
+
+win.graph()
+par(mfrow=c(1,1))
+title.residual <- paste("Residuals min:", round(tail(residual.compare[,1],1),2),"\n Residuals max:", round(tail(residual.compare[,2],1),2),"\n ")
+plot(fitted(lm.r)~residuals(lm.r), main=title.residual)
+lines(fitted(lm.r)~residuals(lm.r), col="blue")
+abline(v=0, col="purple")
+
 #high.price <- coredata(high.hourly[start.point:rows.returned.hourly])
 #low.price <- coredata(low.hourly[start.point:rows.returned.hourly])
 #atr <- rollapply(high.price-low.price, 14, f.mean)
@@ -316,5 +336,22 @@ summary(lm.r)
 
 cat("last (price) :",tail((price),1),"\nlast (fit) :",tail((fit),1),"\nlast (price-fit) :",tail((price-fit),1),"\n")
 cat("max (",ma.factor,"MA) Deviation :",round(max(rollmean(price-fit,ma.factor)),2),"\nmax (",ma.factor,"MA)+fit:",round(tail(fit,1)+max(rollmean(price-fit,ma.factor)),2),"\n2SD(price-fit): ",(2*round(sd(price-fit),2)),"\n")
+residual.compare,"\n")
+plot(fitted(lm.r)~residuals(lm.r), main=title.residual)
+lines(fitted(lm.r)~residuals(lm.r), col="blue")
+abline(v=0, col="purple")
 
+#high.price <- coredata(high.hourly[start.point:rows.returned.hourly])
+#low.price <- coredata(low.hourly[start.point:rows.returned.hourly])
+#atr <- rollapply(high.price-low.price, 14, f.mean)
+#plot(atr)
 
+last <- tail(esdata.hourly,2)
+sysdatetime
+last[2,0]
+cat("Last 2 Closes", last[1,4]," & ", last[2,4],"\n")
+summary(lm.r)
+
+cat("last (price) :",tail((price),1),"\nlast (fit) :",tail((fit),1),"\nlast (price-fit) :",tail((price-fit),1),"\n")
+cat("max (",ma.factor,"MA) Deviation :",round(max(rollmean(price-fit,ma.factor)),2),"\nmax (",ma.factor,"MA)+fit:",round(tail(fit,1)+max(rollmean(price-fit,ma.factor)),2),"\n2SD(price-fit): ",(2*round(sd(price-fit),2)),"\n")
+residual.compare
