@@ -92,7 +92,7 @@ mean(x, na.rm=TRUE)
 ########################################################################
 
 #target.start.date <- "2015-11-15 23:00:00"
-target.start.date <- "2016-01-04 20:24:00"
+target.start.date <- "2016-01-07 10:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
