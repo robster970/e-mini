@@ -154,7 +154,7 @@ mean(x, na.rm=TRUE)
 
 # Set filtering parameters
 iterations <- 1
-contract.rollover.date <-"2015-09-18"
+contract.rollover.date <-"2015-12-18"
 
 while (iterations < 4) {
 
@@ -233,7 +233,7 @@ iterations <- iterations+1
 ########################################################################
 
 #target.start.date <- "2015-12-31 17:30:00"
-target.start.date <- "2016-01-07 01:00:00"
+target.start.date <- "2016-01-29 13:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
