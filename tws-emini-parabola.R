@@ -232,8 +232,8 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-target.start.date <- "2016-01-20 17:30:00"
-#target.start.date <- "2016-01-29 13:30:00"
+#target.start.date <- "2016-01-20 17:30:00"
+target.start.date <- "2016-02-01 20:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
