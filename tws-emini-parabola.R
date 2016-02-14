@@ -232,13 +232,13 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-#target.start.date <- "2016-01-20 17:30:00"
-target.start.date <- "2016-02-05 14:00:00"
+target.start.date <- "2016-02-12 15:00:00"
+#target.start.date <- "2016-02-11 19:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
 # Only use this if backtesting within a dataset
-target.end.date <- "2016-02-03 10:00:00"
+target.end.date <- "2016-02-08 01:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 end.point <- match(as.POSIXct(target.end.date), mid.hourly.time.index)
 
