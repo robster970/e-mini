@@ -22,7 +22,7 @@ pause <- 2; # Sets a pause between collecting data from IB to stop IB from havin
 min.dataset <- 10
 sysdatetime <- format(Sys.time(), "%Y%m%d %H:%M:%S")
 hist.gran <- 40
-contract <-"ESZ5"
+contract <-"ESM6"
 
 #Close all old graphics windows
 graphics.off()
@@ -40,7 +40,7 @@ serverVersion(tws)
 
 # Get the market data for ES
 # Define the contract - THIS NEEDS TO CHANGE EVERY QUARTER
-es <- twsFuture("ES", "GLOBEX", "201603")
+es <- twsFuture("ES", "GLOBEX", "201606")
 
 #Get the market data
 esdata.hourly <- reqHistoricalData(tws, es, endDateTime=sysdatetime, barSize="30 mins", duration="34 D", useRTH = "0")
@@ -62,7 +62,7 @@ serverVersion(tws)
 
 # Get the market data for ES
 # Define the contract - THIS NEEDS TO CHANGE EVERY QUARTER
-es <- twsFuture("ES", "GLOBEX", "201603")
+es <- twsFuture("ES", "GLOBEX", "201606")
 
 #Get the market data
 esdata.daily <- reqHistoricalData(tws, es, endDateTime=sysdatetime, barSize="1 day", duration="9 M", useRTH = "0")
@@ -77,18 +77,18 @@ rows.returned.hourly <- nrow(esdata.hourly)
 rows.returned.daily <- nrow(esdata.daily)
 
 #Carve up the dataset
-open.hourly <-xts(esdata.hourly$ESH6.Open)
-close.hourly <-xts(esdata.hourly$ESH6.Close)
-high.hourly <-xts(esdata.hourly$ESH6.High)
-low.hourly <-xts(esdata.hourly$ESH6.Low)
+open.hourly <-xts(esdata.hourly$ESM6.Open)
+close.hourly <-xts(esdata.hourly$ESM6.Close)
+high.hourly <-xts(esdata.hourly$ESM6.High)
+low.hourly <-xts(esdata.hourly$ESM6.Low)
 mid.hourly <- (high.hourly+low.hourly)/2
 ma.hourly <-rollmean(mid.hourly, ma.size.hourly, align="right")
 lagged.ma.hourly <-lag(ma.hourly,k=-(ma.size.hourly/2))
 
-open.daily <-xts(esdata.daily$ESH6.Open)
-close.daily <-xts(esdata.daily$ESH6.Close)
-high.daily <-xts(esdata.daily$ESH6.High)
-low.daily <-xts(esdata.daily$ESH6.Low)
+open.daily <-xts(esdata.daily$ESM6.Open)
+close.daily <-xts(esdata.daily$ESM6.Close)
+high.daily <-xts(esdata.daily$ESM6.High)
+low.daily <-xts(esdata.daily$ESM6.Low)
 mid.daily <- (high.daily+low.daily)/2
 ma.daily <-rollmean(mid.daily, ma.size.daily, align="right")
 lagged.ma.daily <-lag(ma.daily,k=-(ma.size.daily/2))
@@ -232,7 +232,7 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-target.start.date <- "2016-02-12 15:00:00"
+target.start.date <- "2016-04-18 07:30:00"
 #target.start.date <- "2016-02-19 14:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
