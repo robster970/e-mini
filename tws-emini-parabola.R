@@ -197,7 +197,7 @@ eshourly.volume.days <- eshourly.volume.alldays[start.date]
 
 #Adjust index to NYSE and move volume data into its own object with time filter
 indexTZ(eshourly.volume.days) <-"America/New_york"
-eshourly.volume.open.1 <- apply.daily((eshourly.volume.days[filter.time.1]),sum)
+eshourly.volume.open.1 <- apply.daily((eshourly.volume.days[filter.time.1]),sum);eshourly.volume.open.1
 eshourly.volume.open.2 <- apply.daily((eshourly.volume.days[filter.time.2]),sum)
  
 perc.rank <- function(x, xo)  length(x[x <= xo])/length(x)*100;
@@ -232,13 +232,13 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-target.start.date <- "2016-04-18 07:30:00"
-#target.start.date <- "2016-02-19 14:30:00"
+#target.start.date <- "2016-04-18 07:30:00"
+target.start.date <- "2016-04-12 15:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
 # Only use this if backtesting within a dataset
-target.end.date <- "2016-02-08 01:30:00"
+target.end.date <- "2016-04-19 20:00:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 end.point <- match(as.POSIXct(target.end.date), mid.hourly.time.index)
 

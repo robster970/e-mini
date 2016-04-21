@@ -24,7 +24,7 @@ pause <- 2; # Sets a pause between collecting data from IB to stop IB from havin
 min.dataset <- 10
 sysdatetime <- format(Sys.time(), "%Y%m%d %H:%M:%S")
 hist.gran <- 40
-contract <-"ESH6"
+contract <-"ESM6"
 
 #Close all old graphics windows
 graphics.off()
@@ -42,7 +42,7 @@ serverVersion(tws)
 
 # Get the market data for ES
 # Define the contract - THIS NEEDS TO CHANGE EVERY QUARTER
-es <- twsFuture("ES", "GLOBEX", "201603")
+es <- twsFuture("ES", "GLOBEX", "201606")
 
 #Get the market data
 #esdata.hourly <- reqHistoricalData(tws, es, endDateTime=sysdatetime, barSize="30 mins", duration="34 D", useRTH = "0")
@@ -59,10 +59,10 @@ Sys.sleep(pause)
 rows.returned.hourly <- nrow(esdata.hourly)
 
 #Carve up the dataset
-open.hourly <-xts(esdata.hourly$ESH6.Open)
-close.hourly <-xts(esdata.hourly$ESH6.Close)
-high.hourly <-xts(esdata.hourly$ESH6.High)
-low.hourly <-xts(esdata.hourly$ESH6.Low)
+open.hourly <-xts(esdata.hourly$ESM6.Open)
+close.hourly <-xts(esdata.hourly$ESM6.Close)
+high.hourly <-xts(esdata.hourly$ESM6.High)
+low.hourly <-xts(esdata.hourly$ESM6.Low)
 mid.hourly <- (high.hourly+low.hourly)/2
 ma.hourly <-rollmean(mid.hourly, ma.size.hourly, align="right")
 lagged.ma.hourly <-lag(ma.hourly,k=-(ma.size.hourly/2))
@@ -92,7 +92,7 @@ mean(x, na.rm=TRUE)
 ########################################################################
 
 #target.start.date <- "2015-11-15 23:00:00"
-target.start.date <- "2016-01-07 10:30:00"
+target.start.date <- "2016-04-20 15:45:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
