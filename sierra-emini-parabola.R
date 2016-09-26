@@ -6,39 +6,40 @@
 #													 #
 ################################################################################
 
-# Include all libraries
+# Include all libraries for time series analysis
 library(zoo)
 library(xts)
 library(tseries)
 
 #set some variables
-Sys.setenv(TZ="Europe/London")
+Sys.setenv(TZ="Europe/London")# Used only for IB feed
 get.data <- 1 ; # This connects to live feed when set to (1) and does not connect but uses data in workspace when (0)
 ma.size.hourly <- 30
 ma.size.daily <- 10
 pause <- 2; # Sets a pause between collecting data from IB to stop IB from having a little paddy
-
 min.dataset <- 10
 sysdatetime <- format(Sys.time(), "%Y%m%d %H:%M:%S")
 hist.gran <- 40
-contract <-"ESM6"
 
 #Close all old graphics windows
 graphics.off()
 
-# Check to see that the get_data parameter is set to 1 to get live data
+# Check to see that the get_data parameter is set to 1 to get live data. Only applicable for IB feed but kept in.
 if (get.data == 1){
 
+# Read in Sierra csv file as a Zoo object where the index is created from date and time column
 esdata.hourly <- read.zoo("C:\\SierraChart\\Data\\ESZ16.scid_BarData.txt", sep = ",", index = 1:2, header=TRUE)
 
 }
 
+#Convert Zoo object to XTS object to keep IB manipulation intact.
 esdata.hourly <- as.xts(esdata.hourly)
 
 #Now check the number of rows before doing any processing
 rows.returned.hourly <- nrow(esdata.hourly)
 rows.returned.daily <- nrow(esdata.daily)
 
+# Read in the data to variables.
 open.hourly <-xts(esdata.hourly$Open)
 close.hourly <-xts(esdata.hourly$Close)
 high.hourly <-xts(esdata.hourly$High)
@@ -71,7 +72,7 @@ mean(x, na.rm=TRUE)
 
 # Set filtering parameters
 iterations <- 1
-contract.rollover.date <-"2016-09-16"
+contract.rollover.date <-"2016-09-16" # This is the date that the contract actually switched
 
 while (iterations < 4) {
 
@@ -114,13 +115,17 @@ eshourly.volume.days <- eshourly.volume.alldays[start.date]
 eshourly.volume.days <- eshourly.volume.alldays
 
 #Adjust index to NYSE and move volume data into its own object with time filter
-#indexTZ(eshourly.volume.days) <-"America/New_york"
+#indexTZ(eshourly.volume.days) <-"America/New_york" # Note this is not required for Sierra feed which is already time adjusted.
+
+#Calculate the rolling volume data
 eshourly.volume.open.1 <- apply.daily((eshourly.volume.days[filter.time.1]),sum);eshourly.volume.open.1
 eshourly.volume.open.2 <- apply.daily((eshourly.volume.days[filter.time.2]),sum)
- 
+
+#Calculate where the current data sits in the historic distribution
 perc.rank <- function(x, xo)  length(x[x <= xo])/length(x)*100;
 eshourly.volume.open.percentile <- perc.rank(eshourly.volume.open.2, as.numeric(coredata(tail(eshourly.volume.open.2,1))))
 
+#Plot everything
 colours <- c("black", "red")
 title.3=paste("Plot of", plot.title,"\n", index(tail(eshourly.volume.open.2,1)),"\n Vol: ",coredata(tail(eshourly.volume.open.2,1)),", Percentile: ",round(eshourly.volume.open.percentile,0),"%")
 plot(eshourly.volume.open.2, main=title.3, ylim=c(min(eshourly.volume.open.1),max(eshourly.volume.open.2)))
