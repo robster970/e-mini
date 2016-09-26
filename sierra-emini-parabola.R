@@ -156,7 +156,7 @@ iterations <- iterations+1
 ########################################################################
 
 #target.start.date <- "2016-04-28 02:00:00"
-target.start.date <- "2016-09-21 14:00:00"
+target.start.date <- "2016-09-23 15:30:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
