@@ -28,7 +28,7 @@ graphics.off()
 if (get.data == 1){
 
 # Read in Sierra csv file as a Zoo object where the index is created from date and time column
-esdata.hourly <- read.zoo("C:\\SierraChart\\Data\\ESZ16.scid_BarData.txt", sep = ",", index = 1:2, header=TRUE)
+esdata.hourly <- read.zoo("C:\\SierraChart\\Data\\ESZ17.scid_BarData.txt", sep = ",", index = 1:2, header=TRUE)
 
 }
 
@@ -118,7 +118,7 @@ eshourly.volume.days <- eshourly.volume.alldays
 #indexTZ(eshourly.volume.days) <-"America/New_york" # Note this is not required for Sierra feed which is already time adjusted.
 
 #Calculate the rolling volume data
-eshourly.volume.open.1 <- apply.daily((eshourly.volume.days[filter.time.1]),sum);eshourly.volume.open.1
+eshourly.volume.open.1 <- apply.daily((eshourly.volume.days[filter.time.1]),sum)
 eshourly.volume.open.2 <- apply.daily((eshourly.volume.days[filter.time.2]),sum)
 
 #Calculate where the current data sits in the historic distribution
@@ -155,8 +155,8 @@ iterations <- iterations+1
 # Comment this line out if running in real time.                       #
 ########################################################################
 
-#target.start.date <- "2016-04-28 02:00:00"
-target.start.date <- "2016-09-23 15:30:00"
+target.start.date <- "2017-09-25 11:00:00"
+#target.start.date <- "2017-09-05 13:00:00"
 mid.hourly.time.index <- as.vector(index(mid.hourly))
 start.point <- match(as.POSIXct(target.start.date), mid.hourly.time.index)
 
