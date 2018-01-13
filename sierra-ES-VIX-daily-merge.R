@@ -31,10 +31,20 @@ cleanData$Stop.atr <- cleanData$ATR.esdata * (1+atrStopFactor)
 entryNDistSift <- subset(cleanData, cleanData$NDist.vixdata > 0.841)
 entryPDiffSift <- subset(entryNDistSift, entryNDistSift$PDiff.vixdata > -0.03 & entryNDistSift$PDiff.vixdata < 0.03)
 
+# Extract VIX and PDiff values and make numeric for subsequent manipulation
+lastVixEntry <- as.numeric(tail(entryPDiffSift$Last.vixdata,1))
+lastPDiffEntry <- as.numeric(tail(entryPDiffSift$PDiff.vixdata,1))
+
 exitNDistSift <- subset(cleanData, cleanData$NDist.vixdata < 0.159)
 exitPDiffSift <- subset(exitNDistSift, exitNDistSift$PDiff.vixdata > -0.03 & exitNDistSift$PDiff.vixdata < 0.03)
 
+if (lastPDiffEntry > 0 ) {
+cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
+} else {
 tail(entryPDiffSift, n=2)
+}
+
 tail(exitPDiffSift, n=2)
 tail(cleanData, n=3)
+
 
