@@ -1,9 +1,10 @@
+#Last updated 2018/01/15
 # Include all libraries for time series analysis
 library(zoo)
 library(xts)
 library(tseries)
 
-atrStopFactor = 0.68
+atrStopFactor = 0.70
 
 #Close all old graphics windows
 graphics.off()
