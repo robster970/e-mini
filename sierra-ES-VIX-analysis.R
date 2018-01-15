@@ -4,7 +4,7 @@ library(zoo)
 library(xts)
 library(tseries)
 
-atrStopFactor = 0.68
+atrStopFactor = 0.7
 
 #Close all old graphics windows
 graphics.off()
@@ -89,9 +89,8 @@ tail(cleanData, n=3)
 
 ######################################################################
 
-a <- subset(cleanData,cleanData$NDist.vixdata < 0.159 & cleanData$PDiff.vixdata < 0.03 & cleanData$PDiff.vixdata > -0.03 )
-a
-
-
-
+#Signal Generation from historic data
+entryPDiffSift$Type <- 1
+exitPDiffSift$Type <- 0
+subset(merge(entryPDiffSift, exitPDiffSift), select = c(15,30))
 
