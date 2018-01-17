@@ -29,17 +29,15 @@ cleanData$ATR.esdata <- rollapply(cleanData$TR.esdata, width = 10, mean, fill=NA
 cleanData$Stop.atr <- cleanData$ATR.esdata * (1+atrStopFactor)
 
 # Select rows for investigation - Long Entry
-entryNDistSift <- subset(cleanData, cleanData$NDist.vixdata > 0.841)
-entryPDiffSift <- subset(entryNDistSift, entryNDistSift$PDiff.vixdata > -0.03 & entryNDistSift$PDiff.vixdata < 0.03)
+entrySift <- subset(cleanData, cleanData$NDist.vixdata > 0.841 & cleanData$PDiff.vixdata > -0.03 & cleanData$PDiff.vixdata < 0.03)
 
 # Extract VIX and PDiff values and make numeric for subsequent manipulation of last valid entry
-lastVixEntry <- as.numeric(tail(entryPDiffSift$Last.vixdata,1))
-lastPDiffEntry <- as.numeric(tail(entryPDiffSift$PDiff.vixdata,1))
-lastEntryDate <- tail(entryPDiffSift[,0],1)
+lastVixEntry <- as.numeric(tail(entrySift$Last.vixdata,1))
+lastPDiffEntry <- as.numeric(tail(entrySift$PDiff.vixdata,1))
+lastEntryDate <- tail(entrySift[,0],1)
 
 # Select rows for investigation - Long Exit
-exitNDistSift <- subset(cleanData, cleanData$NDist.vixdata < 0.159)
-exitPDiffSift <- subset(exitNDistSift, exitNDistSift$PDiff.vixdata > -0.03 & exitNDistSift$PDiff.vixdata < 0.03)
+exitSift <- subset(cleanData, cleanData$NDist.vixdata < 0.159 & cleanData$PDiff.vixdata > -0.03 & cleanData$PDiff.vixdata < 0.03)
 
 #############################################################################
 
@@ -47,6 +45,11 @@ exitPDiffSift <- subset(exitNDistSift, exitNDistSift$PDiff.vixdata > -0.03 & exi
 
 if(lastPDiffEntry < 0) {
 cat("LONG ENTRY confirmed by high NDist & negative PDiff on same day of signal\n")
+tail(entryPDiffSift, n=1)
+} else {
+
+if(lastPDiffEntry > 0) {
+cat("LONG ENTRY NOT confirmed by high NDist & negative PDiff on same day of signal\n")
 tail(entryPDiffSift, n=1)
 } else {
 
@@ -65,24 +68,15 @@ if (positiveSignal == 1) {
 cat("LONG ENTRY confirmed by negative PDiff on following day after inital signal\n")
 cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
 } else {
-cat("LONG ENTRY NOT confirmed by negative follow-up PDiff \n")
+cat("LONG ENTRY NOT confirmed by negative PDiff on following day after inital signal\n")
 cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
 }
 }
-
+}
 ##########################################################################
 
 #Print stuff out to manually eyeball it for the time being
-if (lastPDiffEntry > 0 ) {
-cat("High NDist NOT confirmed on ")
-print(lastEntryDate)
-cat("by negative PDiff - wait for negative PDiff on day after signal\n")
-cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
-} else {
-cat("High NDist confirmed by negative PDiff\n")
-tail(entryPDiffSift, n=2)
-}
-
-tail(exitPDiffSift, n=2)
+tail(entrySift, n=2)
+tail(exitSift, n=2)
 tail(cleanData, n=3)
 
