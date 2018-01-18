@@ -3,11 +3,14 @@
 library(zoo)
 library(xts)
 library(tseries)
+#Clear all variables
+rm(list=ls())
 
 atrStopFactor = 0.70
 
 #Close all old graphics windows
 graphics.off()
+
 
 # Read in Sierra csv file as a Zoo object where the index is created from date and time column
 esdata <- read.zoo("C:\\SierraChart\\Data\\ESH18.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
@@ -45,12 +48,12 @@ exitSift <- subset(cleanData, cleanData$NDist.vixdata < 0.159 & cleanData$PDiff.
 
 if(lastPDiffEntry < 0) {
 cat("LONG ENTRY confirmed by high NDist & negative PDiff on same day of signal\n")
-tail(entryPDiffSift, n=1)
+tail(entrySift, n=1)
 } else {
 
 if(lastPDiffEntry > 0) {
 cat("LONG ENTRY NOT confirmed by high NDist & negative PDiff on same day of signal\n")
-tail(entryPDiffSift, n=1)
+tail(entrySift, n=1)
 } else {
 
 entryCandidate <- cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
