@@ -42,44 +42,35 @@ lastEntryDate <- tail(entrySift[,0],1)
 # Select rows for investigation - Long Exit
 exitSift <- subset(cleanData, cleanData$NDist.vixdata < 0.159 & cleanData$PDiff.vixdata > -0.03 & cleanData$PDiff.vixdata < 0.03)
 
+
 #############################################################################
 
 #Trying to ascertain entry signal automatically
 
-if(lastPDiffEntry < 0) {
+entryCandidates <- tail(cleanData, n=2)
+pdiffSignal.1 <- as.numeric(entryCandidates$PDiff.vixdata[1,])
+pdiffSignal.2 <- as.numeric(entryCandidates$PDiff.vixdata[2,])
+ndistSignal.1 <- as.numeric(entryCandidates$NDist.vixdata[1,])
+ndistSignal.2 <- as.numeric(entryCandidates$NDist.vixdata[2,])
+
+if (ndistSignal.2 > 0.841 & pdiffSignal.2 > 0 & pdiffSignal.2 < 0.03) {
 cat("LONG ENTRY confirmed by high NDist & negative PDiff on same day of signal\n")
-tail(entrySift, n=1)
+tail(entryCandidates, n=1)
 } else {
 
-if(lastPDiffEntry > 0) {
-cat("LONG ENTRY NOT confirmed by high NDist & negative PDiff on same day of signal\n")
-tail(entrySift, n=1)
-} else {
-
-entryCandidate <- cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
-entrySignal.1 <- entryCandidate[1,]
-entrySignal.2 <- entryCandidate[2,]
-PDiffSignal.2 <- as.numeric(entrySignal.2$PDiff.vixdata)
-
-if (PDiffSignal.2 < 0) {
-positiveSignal = 1
-} else {
-positiveSignal = 0
-}
-
-if (positiveSignal == 1) {
+if (ndistSignal.1 > 0.841 & pdiffSignal.1 > -0.03 & pdiffSignal.1 < 0.03 & pdiffSignal.1 > -0.03 & pdiffSignal.2 < 0) {
 cat("LONG ENTRY confirmed by negative PDiff on following day after inital signal\n")
-cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
+tail(entryCandidates, n=2)
 } else {
+
 cat("LONG ENTRY NOT confirmed by negative PDiff on following day after inital signal\n")
-cleanData[which(cleanData$Last.vixdata == lastVixEntry) + c(1,0) ,]
+tail(entryCandidates, n=2)
 }
 }
-}
+
 ##########################################################################
 
 #Print stuff out to manually eyeball it for the time being
 tail(entrySift, n=2)
 tail(exitSift, n=2)
 tail(cleanData, n=3)
-
