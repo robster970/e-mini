@@ -13,13 +13,13 @@ graphics.off()
 
 
 # Read in Sierra csv file as a Zoo object where the index is created from date and time column
-#esdata <- read.zoo("C:\\SierraChart\\Data\\ESH18.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
-#vixdata <- read.zoo("C:\\SierraChart\\Data\\$VIX.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
+esdata <- read.zoo("C:\\SierraChart\\Data\\ESH18.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
+vixdata <- read.zoo("C:\\SierraChart\\Data\\$VIX.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
 
 # Added in to handle working away from the windows server
-setwd("/home/robster970/repo/e-mini/sierrafiles")
-esdata <- read.zoo("ESH18.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
-vixdata <- read.zoo("$VIX.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
+#setwd("/home/robster970/repo/e-mini/sierrafiles")
+#esdata <- read.zoo("ESH18.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
+#vixdata <- read.zoo("$VIX.dly_BarData.txt", sep = ",", index.column=1:2, header=TRUE)
 
 # Merge ES and VIX data into a single dataframe and the remove columns not required
 mergeddata = merge(vixdata, esdata)
@@ -40,9 +40,9 @@ cleanData$Stop.atr <- cleanData$ATR.esdata * (1+atrStopFactor)
 entrySift <- subset(cleanData, cleanData$NDist.vixdata > 0.841 & cleanData$PDiff.vixdata > -0.03 & cleanData$PDiff.vixdata < 0.03)
 
 # Extract VIX and PDiff values and make numeric for subsequent manipulation of last valid entry
-lastVixEntry <- as.numeric(tail(entrySift$Last.vixdata,1))
-lastPDiffEntry <- as.numeric(tail(entrySift$PDiff.vixdata,1))
-lastEntryDate <- tail(entrySift[,0],1)
+#lastVixEntry <- as.numeric(tail(entrySift$Last.vixdata,1))
+#lastPDiffEntry <- as.numeric(tail(entrySift$PDiff.vixdata,1))
+#lastEntryDate <- as.Date(tail(entrySift[,0],1))
 
 # Select rows for investigation - Long Exit
 exitSift <- subset(cleanData, cleanData$NDist.vixdata < 0.159 & cleanData$PDiff.vixdata > -0.03 & cleanData$PDiff.vixdata < 0.03)
