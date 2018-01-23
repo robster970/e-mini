@@ -23,7 +23,7 @@ vixdata <- read.zoo("C:\\SierraChart\\Data\\$VIX.dly_BarData.txt", sep = ",", in
 
 # Merge ES and VIX data into a single dataframe and the remove columns not required
 mergeddata = merge(vixdata, esdata)
-cleanData = subset(mergeddata, select = c(4,10,11,12,13))
+cleanData = na.omit(subset(mergeddata, select = c(4,10,11,12,13)))
 
 # Add calculations associated with VIX
 cleanData$Avg.vixdata <- rollapply(cleanData$Last.vixdata, width = 10, mean, fill=NA, align="right", na.rm=TRUE)
