@@ -28,7 +28,7 @@ graphics.off()
 if (get.data == 1){
 
 # Read in Sierra csv file as a Zoo object where the index is created from date and time column
-esdata.hourly <- read.zoo("C:\\SierraChart\\Data\\ESZ17.scid_BarData.txt", sep = ",", index = 1:2, header=TRUE)
+esdata.hourly <- read.zoo("C:\\SierraChart\\Data\\ESH18.scid_BarData.txt", sep = ",", index = 1:2, header=TRUE)
 
 }
 
